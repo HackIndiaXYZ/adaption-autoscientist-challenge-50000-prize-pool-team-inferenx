@@ -1,0 +1,47 @@
+# CineLocalAI — Requirements
+# ===========================
+# Target: Windows 11, Python 3.11, CPU-only
+# Torch 2.12.1 / TorchVision 0.27.1 / TorchAudio 2.11.0 are pre-installed.
+# Do NOT include torch here — it is already in the environment.
+#
+# WHY coqui-tts instead of TTS==0.22.0:
+#   The original `TTS` package (Coqui) is unmaintained since Dec 2023.
+#   It contains a Cython extension (monotonic_align) that must be compiled from
+#   source. On Windows without Visual C++ Build Tools this always fails with:
+#     "ERROR: Failed building wheel for TTS"
+#   The community-maintained fork `coqui-tts` ships pre-built Windows wheels
+#   and maintains the exact same import paths (from TTS.api import TTS).
+#   No code changes are required when switching.
+#
+# Install order:
+#   pip install "numpy==1.26.4"
+#   pip install -r requirements.txt
+
+# ── NumPy — hard-pinned to last stable 1.x release ───────────────────────────
+# openai-whisper and coqui-tts both require numpy < 2.0.
+numpy==1.26.4
+
+# ── Transcription ─────────────────────────────────────────────────────────────
+openai-whisper>=20231117
+
+# ── Emotion Classification + Translation ──────────────────────────────────────
+transformers>=4.44.0,<5.0.0
+sentencepiece>=0.2.0
+sacremoses>=0.0.53              # Required by MarianMT Hindi tokenizer
+accelerate>=0.25.0
+
+# ── TTS — community fork with pre-built Windows wheels ───────────────────────
+# Drop-in replacement for TTS==0.22.0. Same API: from TTS.api import TTS
+# Pre-built wheels: no C++ compiler required on Windows.
+coqui-tts
+gTTS>=2.5.4
+
+# ── Audio Processing ──────────────────────────────────────────────────────────
+pydub>=0.25.1
+soundfile>=0.13.0
+
+# ── Configuration ─────────────────────────────────────────────────────────────
+PyYAML>=6.0
+
+# ── Utilities ─────────────────────────────────────────────────────────────────
+tqdm>=4.66.0

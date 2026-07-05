@@ -1,0 +1,65 @@
+# CineLocalAI — Pipeline Configuration
+# ======================================
+# Target: Windows 11 / Python 3.11 / CPU only
+# All models run locally — no API keys, no GPU required.
+
+# ── Run Identity ──────────────────────────────────────────────────────────────
+run_id: "demo_run_001"   # Unique ID for this pipeline run (used for checkpoints)
+
+# ── Language Settings ─────────────────────────────────────────────────────────
+src_lang: "en"           # Source language ISO code
+tgt_lang: "hi"           # Target dub language ISO code (hi, te, fr, de, es, it, zh)
+
+# ── Whisper (Transcription) ───────────────────────────────────────────────────
+# CPU recommendation: 'base' (~145 MB, ~20-40s for 10s video)
+#                     'small' (~460 MB, ~60-90s for 10s video, better accuracy)
+# Do NOT use 'medium' or 'large' on CPU — they take 10-40 minutes per clip.
+#
+whisper_model: "base"
+whisper_device: "cpu"
+
+# ── Emotion Model ─────────────────────────────────────────────────────────────
+# HuggingFace model ID — null uses default (j-hartmann/emotion-english-distilroberta-base)
+# Runs comfortably on CPU (~5-15s per batch).
+#
+emotion_model: null
+emotion_device: -1       # -1 = CPU (correct for CPU-only environment)
+
+# ── Translation Model ─────────────────────────────────────────────────────────
+# NLLB-200 runs well on CPU (~5-15s per batch of 8 segments).
+translation_device: -1   # -1 = CPU
+
+# ── TTS ───────────────────────────────────────────────────────────────────────
+# CPU mode: speaker_wav is null → Hindi VITS fallback model is used automatically.
+# The VITS model is small (~60 MB) and CPU-compatible.
+#
+# XTTS v2 is optional. On CPU it takes 5-15 minutes per segment — not recommended
+# for MVP testing. To enable it, set speaker_wav to a 6-30s .wav reference file.
+#
+tts_model: "tts_models/multilingual/multi-dataset/xtts_v2"  # Only used if speaker_wav is set
+tts_output_dir: "outputs/tts"
+use_gpu: false            # CPU-only — do not change
+
+# Set to a .wav path to enable XTTS v2 voice cloning.
+# Leave null to use the fast single-speaker Hindi VITS fallback (recommended for CPU).
+speaker_wav: null
+
+# ── Composer (FFmpeg) ─────────────────────────────────────────────────────────
+ffmpeg_path: "C:\\Users\\konne balraju\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-8.1.2-full_build\\bin\\ffmpeg.exe"          # Must be on PATH; install via: winget install ffmpeg
+final_output_dir: "outputs/final"
+original_audio_volume: 0.08    # 0.0 = full mute | 1.0 = keep full original audio
+burn_subtitles: false          # Burn SRT into video (requires libass in FFmpeg build)
+
+# ── Checkpointing ─────────────────────────────────────────────────────────────
+checkpoint_dir: "data/checkpoints"
+
+# ── Localization Backend ──────────────────────────────────────────────────────
+# Options: 'nllb' (standard translation), 'lora' (Mixtral LoRA), or 'auto'
+# Note: LoRA path requires the downloaded adapter files. Local inference runs NLLB.
+localization:
+  backend: "nllb"
+
+models:
+  lora_path: "models/adaption_mixtral_lora"
+  base_model: "mistralai/Mixtral-8x7B-Instruct-v0.1"
+

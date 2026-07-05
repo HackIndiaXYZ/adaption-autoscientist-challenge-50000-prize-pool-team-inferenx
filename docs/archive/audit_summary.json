@@ -1,0 +1,41 @@
+{
+  "dataset_metadata": {
+    "input_file": "indian_movie_dubbing_loc.jsonl",
+    "output_file": "cinelocalai_gold.jsonl",
+    "total_input_rows": 1504,
+    "total_gold_rows": 204,
+    "exclusion_rate_percent": 86.44
+  },
+  "filtering_exclusions": {
+    "domain_not_movie_dialogue": 1300,
+    "language_pair_invalid": 0,
+    "source_text_missing_or_null": 0,
+    "target_text_missing_or_null": 0,
+    "emotion_missing_or_null": 0,
+    "intensity_missing_or_null": 0,
+    "register_missing_or_null": 0,
+    "quality_score_below_4_or_null": 0
+  },
+  "gold_dataset_breakdown": {
+    "language_pairs": {
+      "en_hi": 102,
+      "en_te": 102
+    },
+    "emotions": {
+      "neutral": 60,
+      "surprise": 22,
+      "fear": 32,
+      "sadness": 22,
+      "disgust": 22,
+      "anger": 22,
+      "joy": 24
+    },
+    "registers": {
+      "informal": 178,
+      "formal": 26
+    },
+    "quality_scores": {
+      "5": 204
+    }
+  }
+}

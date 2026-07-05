@@ -1,0 +1,63 @@
+# ==========================================
+# CineLocalAI Production GitIgnore
+# ==========================================
+
+# Python Caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Large Model Weights (Hugging Face Upload Recommended)
+models/base_models/
+models/checkpoints/
+adapter_model.safetensors
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+
+# Repository Directory Clean Caching & Outputs
+data/checkpoints/*
+!data/checkpoints/.gitkeep
+
+data/transcripts/*
+!data/transcripts/.gitkeep
+
+outputs/final/*
+!outputs/final/.gitkeep
+
+outputs/logs/*
+!outputs/logs/.gitkeep
+
+outputs/tts/*
+!outputs/tts/.gitkeep
+
+# System & Temp Files
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE Settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Secrets
+.env
+.env.*
+*.key
+*.pem

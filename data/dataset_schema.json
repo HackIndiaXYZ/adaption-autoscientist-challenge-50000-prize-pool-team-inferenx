@@ -1,0 +1,164 @@
+{
+  "schema_version": "1.0",
+  "schema_name": "CineLocalAI Dataset Schema",
+  "description": "Schema for emotion-aware video dubbing training and evaluation data",
+  "example_record": {
+    "id": "uuid",
+    "language_pair": "en_hi",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "source_text": "I can't believe this is happening.",
+    "target_text": "मुझे विश्वास नहीं हो रहा कि यह हो रहा है।",
+    "emotion": "surprise",
+    "intensity": 0.85,
+    "context_prev": "Everything was normal a few minutes ago.",
+    "context_next": "What should we do now?",
+    "speaker": "speaker_01",
+    "gender": "female",
+    "register": "informal",
+    "domain": "movie_dialogue",
+    "localization_notes": "Natural Hindi expression preferred over literal translation.",
+    "source_meta": {
+      "video_id": "movie_clip_001",
+      "segment_id": 45,
+      "timestamp_start": 125.6,
+      "timestamp_end": 128.4
+    },
+    "quality_score": 5,
+    "augmented": false,
+    "created_at": "2026-07-03T12:00:00Z"
+  },
+  "field_definitions": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "required": true,
+      "description": "Unique record identifier (UUID v4)"
+    },
+    "language_pair": {
+      "type": "string",
+      "required": true,
+      "allowed_values": ["en_hi", "en_te"],
+      "description": "Source-target language pair in ISO format joined by underscore"
+    },
+    "source_lang": {
+      "type": "string",
+      "required": true,
+      "description": "ISO 639-1 source language code"
+    },
+    "target_lang": {
+      "type": "string",
+      "required": true,
+      "description": "ISO 639-1 target language code"
+    },
+    "source_text": {
+      "type": "string",
+      "required": true,
+      "description": "Original transcript text in source language"
+    },
+    "target_text": {
+      "type": "string",
+      "required": true,
+      "description": "Human-verified or model-generated translation in target language"
+    },
+    "emotion": {
+      "type": "string",
+      "required": true,
+      "allowed_values": ["neutral", "joy", "sadness", "anger", "fear", "surprise", "disgust"],
+      "description": "Dominant emotion of the source segment (Ekman 6 + neutral)"
+    },
+    "intensity": {
+      "type": "number",
+      "required": true,
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Emotion intensity as a confidence score from the emotion classifier"
+    },
+    "context_prev": {
+      "type": "string",
+      "required": false,
+      "description": "Text of the immediately preceding segment (for contextual translation)"
+    },
+    "context_next": {
+      "type": "string",
+      "required": false,
+      "description": "Text of the immediately following segment"
+    },
+    "speaker": {
+      "type": "string",
+      "required": false,
+      "description": "Speaker identifier (e.g. speaker_01). Used for voice consistency tracking."
+    },
+    "gender": {
+      "type": "string",
+      "required": false,
+      "allowed_values": ["male", "female", "unknown"],
+      "description": "Perceived gender of the speaker for TTS voice selection"
+    },
+    "register": {
+      "type": "string",
+      "required": true,
+      "allowed_values": ["formal", "informal", "slang"],
+      "description": "Speech register — affects translation style"
+    },
+    "domain": {
+      "type": "string",
+      "required": true,
+      "allowed_values": [
+        "movie_dialogue",
+        "youtube_content",
+        "narration",
+        "interview",
+        "educational",
+        "social_media",
+        "conversation"
+      ],
+      "description": "Content domain — used for domain-adapted translation fine-tuning"
+    },
+    "localization_notes": {
+      "type": "string",
+      "required": false,
+      "description": "Free-text notes for human translators or post-editors on cultural adaptation"
+    },
+    "source_meta": {
+      "type": "object",
+      "required": true,
+      "properties": {
+        "video_id": {
+          "type": "string",
+          "description": "Source video file identifier"
+        },
+        "segment_id": {
+          "type": "integer",
+          "description": "Segment index within the video (0-based)"
+        },
+        "timestamp_start": {
+          "type": "number",
+          "description": "Segment start time in seconds"
+        },
+        "timestamp_end": {
+          "type": "number",
+          "description": "Segment end time in seconds"
+        }
+      }
+    },
+    "quality_score": {
+      "type": "integer",
+      "required": false,
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Human quality rating (1=poor, 5=excellent). Used for training data filtering."
+    },
+    "augmented": {
+      "type": "boolean",
+      "required": true,
+      "description": "True if this record was synthetically generated or augmented, false if human-verified"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "ISO 8601 datetime",
+      "required": true,
+      "description": "Record creation timestamp"
+    }
+  }
+}
